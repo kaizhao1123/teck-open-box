@@ -1,0 +1,119 @@
+/* Base Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: sans-serif; background: #f4f4f9; color: #333; height: 100vh; display: flex; align-items: center; justify-content: center; }
+#root { width: 100%; max-width: 1200px; height: 90vh; }
+
+/* Main Layout */
+.app-layout {
+  display: flex;
+  gap: 20px;
+  height: 100%;
+  padding: 20px;
+  background: white;
+  border: 2px solid #000;
+  border-radius: 8px;
+}
+
+/* --- Left Column: Search & Results --- */
+.main-content {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+h1 { text-align: center; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+
+.search-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.input-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-group label { width: 150px; font-size: 0.9rem; }
+.input-group input { flex: 1; padding: 8px; border: 2px solid #000; border-radius: 4px; }
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-primary { background: #000; color: #fff; border: 2px solid #000; padding: 8px 16px; cursor: pointer; border-radius: 4px; }
+.btn-secondary { background: #fff; color: #000; border: 2px solid #000; padding: 8px 16px; cursor: pointer; border-radius: 4px; }
+
+.results-area {
+  flex: 1;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* --- Right Column: Chat Area --- */
+.chat-sidebar {
+  flex: 1;
+  border: 2px solid #000;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.message-bubble { padding: 10px; border-radius: 8px; max-width: 85%; font-size: 0.9rem; }
+.human { align-self: flex-end; background: #e0e0e0; border: 1px solid #ccc; }
+.ai { align-self: flex-start; background: #000; color: #fff; }
+
+.chat-input-area { display: flex; border-top: 2px solid #000; padding: 10px; gap: 10px; }
+.chat-input-area input { flex: 1; padding: 8px; border: 2px solid #000; }
+.chat-input-area button { padding: 8px 15px; background: #000; color: white; border: none; cursor: pointer; }
+
+/* --- Modal: Advanced Popup --- */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
+}
+
+.modal-content {
+  background: #fff; padding: 30px; border: 2px solid #000; border-radius: 8px;
+  width: 400px; display: flex; flex-direction: column; gap: 20px;
+}
+
+.filter-grid { display: flex; flex-direction: column; gap: 10px; }
+.filter-grid label { display: flex; justify-content: space-between; align-items: center; }
+.filter-grid select { width: 60%; padding: 5px; border: 2px solid #000; }
+
+.modal-actions { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.results-table th {
+  background: #000;
+  color: #fff;
+  text-align: left;
+  padding: 10px;
+}
+
+.results-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.results-table tr:hover {
+  background: #f0f0f0;
+}

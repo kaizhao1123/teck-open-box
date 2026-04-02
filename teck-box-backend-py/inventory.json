@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Apple - 11-inch iPad Air M2 chip with Wi-Fi - 128GB - Space Gray",
+        "model": "MUVP3LL/A",
+        "sku": "6578266",
+        "price": "$549.99",
+        "condition": "Excellent",
+        "notes": "Includes original cable and brick. No scratches on screen.",
+        "link": "https://www.bestbuy.com/site/6578266.p"
+    },
+    {
+        "name": "Apple - MacBook Air 13\" Laptop - M3 chip - 8GB Memory - 256GB SSD - Starlight",
+        "model": "MRXV3LL/A",
+        "sku": "6565800",
+        "price": "$899.99",
+        "condition": "Good",
+        "notes": "Minor scuff on the bottom casing. Battery cycle count: 12.",
+        "link": "https://www.bestbuy.com/site/6565800.p"
+    },
+    {
+        "name": "HP - Victus 15.6\" Full HD Gaming Laptop - AMD Ryzen 5 7535HS - 8GB Memory",
+        "model": "15-fb1013dx",
+        "sku": "6541840",
+        "price": "$479.99",
+        "condition": "Fair",
+        "notes": "Missing original box. Significant savings for a budget gaming setup.",
+        "link": "https://www.bestbuy.com/site/6541840.p"
+    },
+    {
+        "name": "Sony - WH1000XM5 Wireless Noise Canceling Over-the-Ear Headphones - Black",
+        "model": "WH1000XM5/B",
+        "sku": "6505127",
+        "price": "$282.99",
+        "condition": "Excellent",
+        "notes": "Open-box excellent. All original accessories included.",
+        "link": "https://www.bestbuy.com/site/6505127.p"
+    }
+]
