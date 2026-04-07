@@ -18,6 +18,10 @@ ragChain = await createAdvancedRAGChain(vectorStore);
 // index.js
 let chatHistory = []; // Keep it as an array for now
 
+app.get('/', (req, res) => {
+    res.send("Teck-Box Backend is online and healthy!");
+});
+
 app.post('/api/chat', async (req, res) => {
     try {
         const { userMessage } = req.body;
@@ -65,4 +69,5 @@ app.post('/api/search', async (req, res) => {
     }
 });
 
-app.listen(8000, () => console.log("🚀 Teck Box Server live on port 8000"));
+const PORT = process.env.PORT || 8080; 
+app.listen(PORT, () => console.log(`Backend live on port ${PORT}`));
