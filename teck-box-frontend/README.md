@@ -1,4 +1,5 @@
 #  for docker backend
+login: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 032190965304.dkr.ecr.us-east-1.amazonaws.com
 docker build -t teck-box-backend .
 docker tag teck-box-backend:latest 032190965304.dkr.ecr.us-east-1.amazonaws.com/teck-box-backend:latest
 docker push 032190965304.dkr.ecr.us-east-1.amazonaws.com/teck-box-backend:latest  
