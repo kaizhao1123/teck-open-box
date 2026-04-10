@@ -44,40 +44,37 @@ const embeddings = new GoogleGenerativeAIEmbeddings({
 });
 
 /**
- * Initializes the Vector Store by loading JSON, splitting it, and saving/loading index
+ * @param {Array} newDocs - The documents to add
+ * @param {Object} options - { overwrite: boolean, domain: string }
  */
-export async function initializeVectorStore() {
+export async function initializeVectorStore(newDocs = null, options = { overwrite: false, domain: "default" }) {
+  const STORAGE_PATH = `index_${options.domain}`; // Dynamic domain folder
   let vectorStore;
 
-  if (fs.existsSync(VECTOR_STORE_PATH)) {
-    console.log("📂 Loading existing vector index...");
-    vectorStore = await HNSWLib.load(VECTOR_STORE_PATH, embeddings);
-} else {
-    console.log("⚙️ Creating new vector index from inventory.json...");
-    const rawData = JSON.parse(fs.readFileSync(INVENTORY_FILE, "utf8"));
-    
-    // 1. Map and sanitize
-    const docs = rawData.map(item => {
-      // Ensure the content is a string and trim extra whitespace
-      const content = `Product: ${item.name || "N/A"} (${item.model || "N/A"}). Price: $${item.price || 0}. SKU: ${item.sku || "N/A"}.`.trim();
-      
-      return {
-        pageContent: content,
-        metadata: { sku: item.sku || "unknown" }
-      };
-    });
-
-    // 2. Filter out any documents that ended up empty (safety first!)
-    //const validDocs = docs.filter(doc => doc.pageContent.length > 0);
-
-    // 3. Split the valid documents
-    // const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 500, chunkOverlap: 50 });
-    // const splitDocs = await splitter.splitDocuments(validDocs);
-
-    // 4. Create the store
-    vectorStore = await HNSWLib.fromDocuments(docs, embeddings);
-    await vectorStore.save(VECTOR_STORE_PATH);
+  // 1. If 'overwrite' is false, try to load the existing domain first
+  if (!options.overwrite && fs.existsSync(STORAGE_PATH)) {
+    console.log(`📂 Loading existing index for domain: ${options.domain}`);
+    vectorStore = await HNSWLib.load(STORAGE_PATH, embeddings);
   }
+
+  // 2. Process new documents if provided
+  if (newDocs && newDocs.length > 0) {
+    const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 500, chunkOverlap: 100 });
+    const splitDocs = await splitter.splitDocuments(newDocs);
+
+    if (vectorStore && !options.overwrite) {
+      console.log("➕ Appending to existing domain...");
+      await vectorStore.addDocuments(splitDocs);
+    } else {
+      console.log(`🆕 Creating fresh index for domain: ${options.domain}`);
+      vectorStore = await HNSWLib.fromDocuments(splitDocs, embeddings);
+    }
+
+    // Save to the specific domain path
+    await vectorStore.save(STORAGE_PATH);
+  } 
+
+  console.log(`vectorStore is ready.`);
   return vectorStore;
 }
 

@@ -15,25 +15,61 @@ export function useAppLogic() {
   const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
   // Auto-scroll logic
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Network logic
+  // --- PDF UPLOAD LOGIC ---
+  const handleFileUpload = async (file, domain = 'main_inventory', overwrite = false) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('domain', domain);
+    formData.append('overwrite', overwrite);
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/upload`, {
+        method: "POST",
+        body: formData, // No headers needed for FormData
+      });
+      const data = await response.json();
+      setMessages(prev => [...prev, { role: 'ai', text: `✅ ${data.message}` }]);
+      return data;
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'ai', text: "❌ Upload failed." }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // --- CHAT LOGIC (Stateless) ---
   const handleChatSend = async () => {
     if (!chatInput.trim()) return;
 
-    const userMsg = { role: 'human', text: chatInput };
+    const currentInput = chatInput;
+    const userMsg = { role: 'human', text: currentInput };
+    
+    // 1. Prepare history for the backend [["human", "text"], ["ai", "text"]]
+    // We skip the very first welcome message which isn't in the vector store
+    const historyForBackend = messages
+      .filter(m => m.text !== "Welcome to Teck Open Box! How can I assist you today?")
+      .map(m => [m.role, m.text]);
+
     setMessages(prev => [...prev, userMsg]);
     setChatInput('');
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/chat", {
+      const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userMessage: chatInput })
+        body: JSON.stringify({ 
+          userMessage: currentInput,
+          history: historyForBackend 
+        })
       });
       const data = await response.json();
       setMessages(prev => [...prev, { role: 'ai', text: data.aiResponse }]);
@@ -49,7 +85,7 @@ export function useAppLogic() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/search", {
+      const response = await fetch(`${API_BASE_URL}/api/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: target })
@@ -74,6 +110,7 @@ export function useAppLogic() {
     isLoading,
     chatEndRef,
     handleChatSend,
-    handleSearch
+    handleSearch,
+    handleFileUpload
   };
 }
