@@ -8,10 +8,17 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:5173", "https://main.d3qg0zf8mzl7ye.amplifyapp.com"], 
+  origin: [
+    "http://localhost:5173", 
+    "https://main.d3qg0zf8mzl7ye.amplifyapp.com",
+    "https://wanhan-teck.com",
+    "https://www.wanhan-teck.com"
+  ],
   methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
+  allowedHeaders: ["Content-Type"],
+  credentials: true
 }));
+
 app.use(express.json());
 
 // Global variables to hold our initialized logic
