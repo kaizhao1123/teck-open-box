@@ -8,7 +8,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:5173", "https://your-future-amplify-url.com"], 
+  origin: ["http://localhost:5173", "https://main.d3qg0zf8mzl7ye.amplifyapp.com"], 
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
